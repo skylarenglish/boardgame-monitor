@@ -5,7 +5,9 @@ import seaborn as sn
 import copy
 from openskill.models import PlackettLuce
 import streamlit as st
-st.set_page_config(layout='wide')
+import networkx as nx
+from itertools import combinations, chain
+st.set_page_config()
 
 def hierarchy_pos(G, root, levels=None, width=1., height=1.):
     '''If there is a cycle that is reachable from root, then this will see infinite recursion.
@@ -106,6 +108,12 @@ for player_1 in array_of_unique_players:
 st.write('Predicted Win Probability by Player')
 st.write(pd.DataFrame(win_matrix, columns=array_of_unique_players, index=array_of_unique_players).loc[player])
 
+G = nx.Graph()
+G.add_nodes_from(np.unique(player_games_df['players'].values))
+G.add_edges_from(set(chain(*[list(combinations(game,2)) for game in [sorted(game) for game in games_df['players'].to_list()]])))
+
 pos = hierarchy_pos(nx.bfs_tree(G, player),player)    
 fig = plt.figure(2, figsize=(20,18), dpi=60)
-st.graphviz_chart(nx.draw_networkx(G, pos=pos, with_labels=True, node_size=2000))
+nx.draw_networkx(G, pos=pos, with_labels=True, node_size=2000)
+st.write(f'Who {player} has played')
+st.pyplot(fig)
