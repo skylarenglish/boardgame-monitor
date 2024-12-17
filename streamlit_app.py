@@ -106,7 +106,7 @@ for player_1 in array_of_unique_players:
     for player_2 in array_of_unique_players:
         win_matrix[np.argmax(array_of_unique_players == player_1), np.argmax(array_of_unique_players== player_2)] = round(model.predict_win([[player_rankings[player_1]], [player_rankings[player_2]]])[0],2)
 st.write('Predicted Win Probability by Player')
-st.write(pd.DataFrame(win_matrix, columns=array_of_unique_players, index=array_of_unique_players).loc[player])
+st.write(pd.DataFrame(win_matrix, columns=array_of_unique_players, index=array_of_unique_players).loc[player].sort_values())
 
 G = nx.Graph()
 G.add_nodes_from(np.unique(player_games_df['players'].values))
