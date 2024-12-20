@@ -96,7 +96,7 @@ diffs = pd.DataFrame(diffs)
 diffs['game'] = games_df[games_df['players'].apply(lambda x: player in x)]['game_played']
 diffs.set_index('game', inplace=True)
 diffs.plot(kind='bar')
-st.write(f"{player}'s skill changes")
+st.write(f"{player}'s skill ranking changes")
 st.write(diffs)
 st.bar_chart(diffs,width=1000,use_container_width=False)
 
